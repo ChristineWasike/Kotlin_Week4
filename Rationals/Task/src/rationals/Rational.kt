@@ -34,14 +34,19 @@ private constructor(val numerator: BigInteger, val denominator: BigInteger) {
 
 // Defining the extension functions on DIVISION for the different digit representations
 // Integer
+infix fun Int.divBy(denominator: Int): Rational {
+    return Rational.initialize(this.toBigInteger(), denominator.toBigInteger())
+}
 
 // BigInteger
 infix fun BigInteger.divBy(denominator: BigInteger): Rational {
     return Rational.initialize(this, denominator)
 }
 
-//
-
+// Long
+infix fun Long.divBy(denominator: Long): Rational {
+    return Rational.initialize(this.toBigInteger(), denominator.toBigInteger())
+}
 
 
 fun main() {
