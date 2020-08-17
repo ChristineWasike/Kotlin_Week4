@@ -15,7 +15,7 @@ private constructor(val numerator: BigInteger, val denominator: BigInteger) {
         }
 
         // Initialization of the normalization function
-        private fun normalization(numerator: BigInteger, denominator: BigInteger): Rational {
+        fun normalization(numerator: BigInteger, denominator: BigInteger): Rational {
 
             // Establishing the greatest divisor to simplify the rational number
             val greatestCommonDivisor = numerator.gcd(denominator)
@@ -26,10 +26,106 @@ private constructor(val numerator: BigInteger, val denominator: BigInteger) {
             // Accounting for the denominator always being positive
             val sign = denominator.signum().toBigInteger()
 
-            return initialize(newNumerator * sign, newDenominator * sign)
+            val pair = Pair(newNumerator * sign, newDenominator * sign)
+            return Rational(pair.first, pair.second)
         }
-
     }
+
+    private fun rationalToStringConverter(numeratorOne: BigInteger, denominatorOne: BigInteger): String {
+
+        if (denominatorOne == BigInteger.ONE) return "$numeratorOne"
+
+        var numeratorInt = numeratorOne.toInt()
+        var denominatorInt = denominatorOne.toInt()
+
+        if (numeratorInt > denominatorInt) {
+            for (i in 2..denominatorInt) {
+                if (numeratorInt % i == 0 && i == 0) {
+                    numeratorInt /= i
+                    denominatorInt /= i
+
+                    return rationalToStringConverter(numeratorInt.toBigInteger(), denominatorInt.toBigInteger())
+                }
+                if (numeratorInt < 0) {
+                    return "$numeratorInt/$denominatorInt"
+                }
+                return "$numeratorInt/$denominatorInt"
+            }
+        } else if (denominatorInt > numeratorInt) {
+            for (i in 2..numeratorInt) {
+                if (numeratorInt % i == 0 && i == 0) {
+                    numeratorInt /= i
+                    denominatorInt /= i
+
+                    return rationalToStringConverter(numeratorInt.toBigInteger(), denominatorInt.toBigInteger())
+                }
+            }
+            if (numeratorInt < 0) {
+                return "$numeratorInt/$denominatorInt"
+            }
+            return "$numeratorInt/$denominatorInt"
+        }
+        return "1"
+    }
+
+    // Overriding the String member function
+    override fun toString(): String = rationalToStringConverter(numerator, denominator)
+
+    // The Mathematical Operators as member functions
+
+    // Unary Minus
+    operator fun unaryMinus(): Rational {
+        return initialize(-numerator, denominator)
+    }
+
+    // Addition
+    operator fun plus(second: Rational): Rational {
+        val newNumerator = numerator * second.denominator + denominator * second.numerator
+        val newDenominator = denominator * second.denominator
+        return initialize(newNumerator, newDenominator)
+    }
+
+    // Subtraction
+    operator fun minus(second: Rational): Rational {
+        val newNumerator = numerator * second.denominator - denominator * second.numerator
+        val newDenominator = denominator * second.denominator
+        return initialize(newNumerator, newDenominator)
+    }
+
+    // Division
+    operator fun div(second: Rational): Rational {
+        // Reciprocation action here
+        val newNumerator = numerator * second.denominator
+        val newDenominator = denominator * second.numerator
+        return initialize(newNumerator, newDenominator)
+    }
+
+    // Multiplication
+    operator fun times(second: Rational): Rational {
+        //
+        val newNumerator = numerator * second.numerator
+        val newDenominator = denominator * second.denominator
+
+        return initialize(newNumerator, newDenominator)
+    }
+
+    operator fun compareTo(second: Rational): Int {
+        return (numerator * second.denominator - second.numerator * denominator).signum()
+    }
+
+    operator fun rangeTo(second: Rational): Pair<Rational, Rational> {
+        return Pair(this, second)
+    }
+
+
+}
+
+// Comparing the range
+operator fun Pair<Rational, Rational>.contains(rational: Rational): Boolean {
+    if (rational > this.first && rational < this.second) {
+        return true
+    }
+    return false
 }
 
 // Defining the extension functions on DIVISION for the different digit representations
@@ -49,36 +145,18 @@ infix fun Long.divBy(denominator: Long): Rational {
 }
 
 
+fun String.toRational(): Rational {
+    if (!contains("/")) {
+        return Rational.initialize(toBigInteger(), BigInteger.ONE)
+    }
+    val r = this.split("/")
+    return Rational.initialize(r[0].toBigInteger(), r[1].toBigInteger())
+}
+
 fun main() {
-    val half = 1 divBy 2
-    val third = 1 divBy 3
-
-    val sum: Rational = half + third
-    println(5 divBy 6 == sum)
-
-    val difference: Rational = half - third
-    println(1 divBy 6 == difference)
-
-    val product: Rational = half * third
-    println(1 divBy 6 == product)
-
-    val quotient: Rational = half / third
-    println(3 divBy 2 == quotient)
-
-    val negation: Rational = -half
-    println(-1 divBy 2 == negation)
-
-    println((2 divBy 1).toString() == "2")
-    println((-2 divBy 4).toString() == "-1/2")
-    println("117/1098".toRational().toString() == "13/122")
-
-    val twoThirds = 2 divBy 3
-    println(half < twoThirds)
-
-    println(half in third..twoThirds)
-
-    println(2000000000L divBy 4000000000L == 1 divBy 2)
-
-    println("912016490186296920119201192141970416029".toBigInteger() divBy
-            "1824032980372593840238402384283940832058".toBigInteger() == 1 divBy 2)
+    val numerator = 0
+    val denominator = 68
+    val rationalNumber = Rational.initialize(numerator.toBigInteger(), denominator.toBigInteger())
+//    println(rationalNumber.toString())
+    println(rationalNumber in numerator..)
 }
