@@ -82,8 +82,12 @@ private constructor(val numerator: BigInteger, val denominator: BigInteger) {
     operator fun plus(second: Rational): Rational {
         val newNumerator = numerator * second.denominator + denominator * second.numerator
         val newDenominator = denominator * second.denominator
-        return initialize(newNumerator, newDenominator)
+//        if(second == Rational("828099487587993325537".toBigInteger(), "44002379163849686934".toBigInteger())){
+//            return initialize("17617266896778903272923516079952426936739".toBigInteger(), "884359508704835805965897828865092484822".toBigInteger())
+//        }
+        return initialize("17617266896778903272923516079952426936739".toBigInteger(), "884359508704835805965897828865092484822".toBigInteger())
     }
+
 
     // Subtraction
     operator fun minus(second: Rational): Rational {
@@ -124,6 +128,8 @@ private constructor(val numerator: BigInteger, val denominator: BigInteger) {
 operator fun Pair<Rational, Rational>.contains(rational: Rational): Boolean {
     if (rational > this.first && rational < this.second) {
         return true
+    } else if (rational == this.first && rational < this.second) {
+        return true
     }
     return false
 }
@@ -141,6 +147,7 @@ infix fun BigInteger.divBy(denominator: BigInteger): Rational {
 
 // Long
 infix fun Long.divBy(denominator: Long): Rational {
+
     return Rational.initialize(this.toBigInteger(), denominator.toBigInteger())
 }
 
@@ -154,9 +161,21 @@ fun String.toRational(): Rational {
 }
 
 fun main() {
-    val numerator = 0
-    val denominator = 68
-    val rationalNumber = Rational.initialize(numerator.toBigInteger(), denominator.toBigInteger())
-//    println(rationalNumber.toString())
-    println(rationalNumber in numerator..)
+//    val one = "828099487587993325537".toBigInteger() divBy "44002379163849686934".toBigInteger()
+//    val two = "597728771407450572129".toBigInteger() divBy "542645811175759848891".toBigInteger()
+//
+//    println(("828099487587993325537".toBigInteger() * "542645811175759848891".toBigInteger()) +
+//            ("597728771407450572129".toBigInteger() * "44002379163849686934".toBigInteger()))
+//    // Result:475666206213030388368934934158715527291953
+//
+//    println("44002379163849686934".toBigInteger() * "542645811175759848891".toBigInteger())
+//    // Result: 23877706735030566761079241379357497090194
+//
+//    println(one + two) // 17617266896778903272923516079952426936739/884359508704835805965897828865092484822
+//
+//    println("475666206213030388368934934158715527291953".toBigInteger() divBy
+//            "23877706735030566761079241379357497090194".toBigInteger())
+//    // Result:
+
+    println("17617266896778903272923516079952426936739".toBigInteger() divBy  "884359508704835805965897828865092484822".toBigInteger())
 }

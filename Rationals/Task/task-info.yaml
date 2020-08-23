@@ -232,5 +232,10 @@ files:
   visible: true
   learner_created: true
 feedback_link: https://www.coursera.org/learn/kotlin-for-java-developers/programming/FNjea/rationals/discussions
-status: Unchecked
+status: Failed
+feedback:
+  message: Wrong result for 828099487587993325537/44002379163849686934 + 597728771407450572129/542645811175759848891
+  time: Mon, 17 Aug 2020 12:15:45 UTC
+  expected: 17617266896778903272923516079952426936739/884359508704835805965897828865092484822
+  actual: -2035832413/-1191051562
 record: -1
