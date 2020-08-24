@@ -1,60 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="rationals.TestRationals" tests="1" skipped="0" failures="1" errors="0" timestamp="2020-08-17T12:59:18" hostname="DESKTOP-HEB6D77" time="0.018">
+<testsuite name="rationals.TestRationals" tests="43" skipped="0" failures="0" errors="0" timestamp="2020-08-24T19:36:48" hostname="DESKTOP-HEB6D77" time="0.082">
   <properties/>
-  <testcase name="test2Arithmetic4" classname="rationals.TestRationals" time="0.018">
-    <failure message="org.junit.ComparisonFailure: Wrong result for 828099487587993325537/44002379163849686934 + 597728771407450572129/542645811175759848891 expected:&lt;[17617266896778903272923516079952426936739/88435950870483580596589782886509248482]2&gt; but was:&lt;[-2035832413/-119105156]2&gt;" type="org.junit.ComparisonFailure">org.junit.ComparisonFailure: Wrong result for 828099487587993325537/44002379163849686934 + 597728771407450572129/542645811175759848891 expected:&lt;[17617266896778903272923516079952426936739/88435950870483580596589782886509248482]2&gt; but was:&lt;[-2035832413/-119105156]2&gt;
-	at org.junit.Assert.assertEquals(Assert.java:115)
-	at rationals.TestRationals.testArithmeticOperation(TestRationals.kt:16)
-	at rationals.TestRationals.test2Arithmetic4(TestRationals.kt:150)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
-	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
-	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
-	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.runTestClass(JUnitTestClassExecutor.java:110)
-	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.execute(JUnitTestClassExecutor.java:58)
-	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.execute(JUnitTestClassExecutor.java:38)
-	at org.gradle.api.internal.tasks.testing.junit.AbstractJUnitTestClassProcessor.processTestClass(AbstractJUnitTestClassProcessor.java:62)
-	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:51)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:36)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
-	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:33)
-	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:94)
-	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
-	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:119)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:36)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
-	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:182)
-	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:164)
-	at org.gradle.internal.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:414)
-	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
-	at org.gradle.internal.concurrent.ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:48)
-	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
-	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
-	at org.gradle.internal.concurrent.ThreadFactoryImpl$ManagedThreadRunnable.run(ThreadFactoryImpl.java:56)
-	at java.base/java.lang.Thread.run(Thread.java:834)
-</failure>
-  </testcase>
+  <testcase name="test0Sample9InRange" classname="rationals.TestRationals" time="0.008"/>
+  <testcase name="test0Sample3Product" classname="rationals.TestRationals" time="0.002"/>
+  <testcase name="test4InRange0" classname="rationals.TestRationals" time="0.011"/>
+  <testcase name="test4InRange1" classname="rationals.TestRationals" time="0.001"/>
+  <testcase name="test4InRange2" classname="rationals.TestRationals" time="0.0"/>
+  <testcase name="test4InRange3" classname="rationals.TestRationals" time="0.0"/>
+  <testcase name="test4InRange4" classname="rationals.TestRationals" time="0.001"/>
+  <testcase name="test4InRange5" classname="rationals.TestRationals" time="0.0"/>
+  <testcase name="test4InRange6" classname="rationals.TestRationals" time="0.0"/>
+  <testcase name="test0Sample10Long" classname="rationals.TestRationals" time="0.001"/>
+  <testcase name="test3Comparison10" classname="rationals.TestRationals" time="0.008"/>
+  <testcase name="test0Sample1Sum" classname="rationals.TestRationals" time="0.001"/>
+  <testcase name="test0Sample5Negation" classname="rationals.TestRationals" time="0.001"/>
+  <testcase name="test0Sample4Quotient" classname="rationals.TestRationals" time="0.0"/>
+  <testcase name="test1Normalized0" classname="rationals.TestRationals" time="0.0"/>
+  <testcase name="test1Normalized1" classname="rationals.TestRationals" time="0.001"/>
+  <testcase name="test1Normalized2" classname="rationals.TestRationals" time="0.001"/>
+  <testcase name="test1Normalized3" classname="rationals.TestRationals" time="0.0"/>
+  <testcase name="test1Normalized4" classname="rationals.TestRationals" time="0.001"/>
+  <testcase name="test1Normalized5" classname="rationals.TestRationals" time="0.0"/>
+  <testcase name="test3Comparison0" classname="rationals.TestRationals" time="0.0"/>
+  <testcase name="test3Comparison1" classname="rationals.TestRationals" time="0.0"/>
+  <testcase name="test3Comparison2" classname="rationals.TestRationals" time="0.0"/>
+  <testcase name="test3Comparison3" classname="rationals.TestRationals" time="0.0"/>
+  <testcase name="test3Comparison4" classname="rationals.TestRationals" time="0.0"/>
+  <testcase name="test3Comparison5" classname="rationals.TestRationals" time="0.0"/>
+  <testcase name="test3Comparison6" classname="rationals.TestRationals" time="0.001"/>
+  <testcase name="test3Comparison7" classname="rationals.TestRationals" time="0.0"/>
+  <testcase name="test3Comparison8" classname="rationals.TestRationals" time="0.001"/>
+  <testcase name="test3Comparison9" classname="rationals.TestRationals" time="0.0"/>
+  <testcase name="test0Sample8Comparison" classname="rationals.TestRationals" time="0.0"/>
+  <testcase name="test0Sample11BigInteger" classname="rationals.TestRationals" time="0.001"/>
+  <testcase name="test0Sample2Difference" classname="rationals.TestRationals" time="0.004"/>
+  <testcase name="test0Sample6Integer" classname="rationals.TestRationals" time="0.0"/>
+  <testcase name="test2Arithmetic0" classname="rationals.TestRationals" time="0.012"/>
+  <testcase name="test2Arithmetic1" classname="rationals.TestRationals" time="0.001"/>
+  <testcase name="test2Arithmetic2" classname="rationals.TestRationals" time="0.001"/>
+  <testcase name="test2Arithmetic3" classname="rationals.TestRationals" time="0.001"/>
+  <testcase name="test2Arithmetic4" classname="rationals.TestRationals" time="0.003"/>
+  <testcase name="test2Arithmetic5" classname="rationals.TestRationals" time="0.003"/>
+  <testcase name="test2Arithmetic6" classname="rationals.TestRationals" time="0.002"/>
+  <testcase name="test2Arithmetic7" classname="rationals.TestRationals" time="0.003"/>
+  <testcase name="test0Sample7NormalizedForm" classname="rationals.TestRationals" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

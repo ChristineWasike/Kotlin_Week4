@@ -1,181 +1,169 @@
 package rationals
 
 import java.math.BigInteger
+import java.util.*
 
-
-// Creating the Rational Class with guided values for the numerator and denominator as BigIntegers
-@Suppress("DataClassPrivateConstructor")
-data class Rational
-private constructor(val numerator: BigInteger, val denominator: BigInteger) {
+class Rational(numerator: BigInteger, denominator: BigInteger) : Comparable<Rational> {
     companion object {
-        fun initialize(numerator: BigInteger, denominator: BigInteger): Rational {
-            // Throwing an IllegalArgumentException when the denominator is 0
-            require(denominator != BigInteger.ZERO) { "Denominator must be non-zero" }
-            return normalization(numerator, denominator)
-        }
-
-        // Initialization of the normalization function
-        fun normalization(numerator: BigInteger, denominator: BigInteger): Rational {
-
-            // Establishing the greatest divisor to simplify the rational number
-            val greatestCommonDivisor = numerator.gcd(denominator)
-
-            val newNumerator = numerator / greatestCommonDivisor
-            val newDenominator = denominator / greatestCommonDivisor
-
-            // Accounting for the denominator always being positive
-            val sign = denominator.signum().toBigInteger()
-
-            val pair = Pair(newNumerator * sign, newDenominator * sign)
-            return Rational(pair.first, pair.second)
-        }
+        val ZERO = Rational(BigInteger.ZERO, BigInteger.ONE)
     }
 
-    private fun rationalToStringConverter(numeratorOne: BigInteger, denominatorOne: BigInteger): String {
+    private val numerator: BigInteger
+    private val denominator: BigInteger
 
-        if (denominatorOne == BigInteger.ONE) return "$numeratorOne"
+    constructor(number: Int) : this(number.toBigInteger(), BigInteger.ONE)
+    constructor(number: Long) : this(number.toBigInteger(), BigInteger.ONE)
+    constructor(number: BigInteger) : this(number, BigInteger.ONE)
 
-        var numeratorInt = numeratorOne.toInt()
-        var denominatorInt = denominatorOne.toInt()
-
-        if (numeratorInt > denominatorInt) {
-            for (i in 2..denominatorInt) {
-                if (numeratorInt % i == 0 && i == 0) {
-                    numeratorInt /= i
-                    denominatorInt /= i
-
-                    return rationalToStringConverter(numeratorInt.toBigInteger(), denominatorInt.toBigInteger())
-                }
-                if (numeratorInt < 0) {
-                    return "$numeratorInt/$denominatorInt"
-                }
-                return "$numeratorInt/$denominatorInt"
-            }
-        } else if (denominatorInt > numeratorInt) {
-            for (i in 2..numeratorInt) {
-                if (numeratorInt % i == 0 && i == 0) {
-                    numeratorInt /= i
-                    denominatorInt /= i
-
-                    return rationalToStringConverter(numeratorInt.toBigInteger(), denominatorInt.toBigInteger())
-                }
-            }
-            if (numeratorInt < 0) {
-                return "$numeratorInt/$denominatorInt"
-            }
-            return "$numeratorInt/$denominatorInt"
-        }
-        return "1"
+    init {
+        // Throwing an IllegalArgumentException when the denominator is 0
+        require(denominator != BigInteger.ZERO) { "Denominator must be non-zero" }
+        val (normalizedNumerator, normalizedDenominator) = normalize(numerator, denominator)
+        this.numerator = normalizedNumerator
+        this.denominator = normalizedDenominator
     }
 
-    // Overriding the String member function
-    override fun toString(): String = rationalToStringConverter(numerator, denominator)
+    private fun normalize(numerator: BigInteger, denominator: BigInteger): Pair<BigInteger, BigInteger> {
+        // Establishing the greatest divisor to simplify the rational number
+        val greatestCommonDivisor = numerator.gcd(denominator)
 
-    // The Mathematical Operators as member functions
+        val newNumerator = numerator / greatestCommonDivisor
+        val newDenominator = denominator / greatestCommonDivisor
 
-    // Unary Minus
+        // Accounting for the denominator always being positive
+        val sign = denominator.signum().toBigInteger()
+
+        val pair = Pair(newNumerator * sign, newDenominator * sign)
+        return Pair(pair.first, pair.second)
+    }
+
+    private fun greatestCommonDivisor(m: BigInteger, n: BigInteger): BigInteger {
+        // Getting the absolute values of both entries
+        val a = m.abs()
+        val b = n.abs()
+        return if (b == BigInteger.ZERO) a else greatestCommonDivisor(b, a % b)
+    }
+
+    private fun leastCommonMultiple(m: BigInteger, n: BigInteger): BigInteger {
+        val a = m.abs()
+        val b = n.abs()
+        return a * (b / greatestCommonDivisor(a, b))
+    }
+
     operator fun unaryMinus(): Rational {
-        return initialize(-numerator, denominator)
+        return Rational(-numerator, denominator)
     }
 
-    // Addition
     operator fun plus(second: Rational): Rational {
-        val newNumerator = numerator * second.denominator + denominator * second.numerator
-        val newDenominator = denominator * second.denominator
-//        if(second == Rational("828099487587993325537".toBigInteger(), "44002379163849686934".toBigInteger())){
-//            return initialize("17617266896778903272923516079952426936739".toBigInteger(), "884359508704835805965897828865092484822".toBigInteger())
-//        }
-        return initialize("17617266896778903272923516079952426936739".toBigInteger(), "884359508704835805965897828865092484822".toBigInteger())
+        val first = this
+
+        // Edge cases
+        if (first == Rational(BigInteger.ZERO, BigInteger.ONE)) return second
+        if (second == Rational(BigInteger.ZERO, BigInteger.ONE)) return first
+
+        // Finding the GCD of the numerators and denominators
+        val gcdNumerator = greatestCommonDivisor(first.numerator, second.numerator)
+        val gcdDenominator = greatestCommonDivisor(first.denominator, second.denominator)
+
+        // Adding cross-product terms for numerators
+        val newNumerator = gcdNumerator * ((first.numerator / gcdNumerator) * (second.denominator / gcdDenominator) +
+                (second.numerator / gcdNumerator) * (first.denominator / gcdDenominator))
+
+        val newDenominator = leastCommonMultiple(first.denominator, second.denominator)
+
+        //val newNumerator = numerator * second.denominator + denominator * second.numerator
+        //val newDenominator = denominator * second.denominator
+        return Rational(newNumerator, newDenominator)
     }
 
+    private fun negate(): Rational = Rational(-numerator, denominator)
 
-    // Subtraction
-    operator fun minus(second: Rational): Rational {
-        val newNumerator = numerator * second.denominator - denominator * second.numerator
-        val newDenominator = denominator * second.denominator
-        return initialize(newNumerator, newDenominator)
+    operator fun minus(b: Rational): Rational {
+        return this.plus(b.negate())
     }
 
-    // Division
-    operator fun div(second: Rational): Rational {
-        // Reciprocation action here
-        val newNumerator = numerator * second.denominator
-        val newDenominator = denominator * second.numerator
-        return initialize(newNumerator, newDenominator)
-    }
-
-    // Multiplication
     operator fun times(second: Rational): Rational {
-        //
-        val newNumerator = numerator * second.numerator
-        val newDenominator = denominator * second.denominator
-
-        return initialize(newNumerator, newDenominator)
+        val first = this
+        // Simplifying the two rationals before multiplication
+        val x = Rational(first.numerator, second.denominator)
+        val y = Rational(second.numerator, first.denominator)
+        return Rational(x.numerator * y.numerator, x.denominator * y.denominator)
     }
 
-    operator fun compareTo(second: Rational): Int {
-        return (numerator * second.denominator - second.numerator * denominator).signum()
+    private fun reciprocal(): Rational = Rational(denominator, numerator)
+
+    operator fun div(b: Rational): Rational {
+        val a = this
+        return a.times(b.reciprocal())
     }
 
-    operator fun rangeTo(second: Rational): Pair<Rational, Rational> {
-        return Pair(this, second)
+    override fun toString(): String =
+            if (denominator == BigInteger.ONE) "$numerator" else "$numerator/$denominator"
+
+    override fun hashCode(): Int {
+        return Objects.hash(numerator, denominator)
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || javaClass != other.javaClass) return false
+        return compareTo(other as Rational) == 0
+    }
+
+    override operator fun compareTo(other: Rational): Int {
+        return (numerator * other.denominator - other.numerator * denominator).signum()
     }
 
 
 }
 
-// Comparing the range
-operator fun Pair<Rational, Rational>.contains(rational: Rational): Boolean {
-    if (rational > this.first && rational < this.second) {
-        return true
-    } else if (rational == this.first && rational < this.second) {
-        return true
+fun String.toRational(): Rational {
+    if (!contains("/")) {
+        return Rational(toBigInteger(), BigInteger.ONE)
     }
-    return false
+    val r = this.split("/")
+    return Rational(r[0].toBigInteger(), r[1].toBigInteger())
 }
 
 // Defining the extension functions on DIVISION for the different digit representations
 // Integer
 infix fun Int.divBy(denominator: Int): Rational {
-    return Rational.initialize(this.toBigInteger(), denominator.toBigInteger())
+    return Rational(this) / Rational(denominator)
 }
 
 // BigInteger
 infix fun BigInteger.divBy(denominator: BigInteger): Rational {
-    return Rational.initialize(this, denominator)
+    return Rational(this) / Rational(denominator)
 }
 
 // Long
 infix fun Long.divBy(denominator: Long): Rational {
-
-    return Rational.initialize(this.toBigInteger(), denominator.toBigInteger())
-}
-
-
-fun String.toRational(): Rational {
-    if (!contains("/")) {
-        return Rational.initialize(toBigInteger(), BigInteger.ONE)
-    }
-    val r = this.split("/")
-    return Rational.initialize(r[0].toBigInteger(), r[1].toBigInteger())
+    return Rational(this) / Rational(denominator)
 }
 
 fun main() {
-//    val one = "828099487587993325537".toBigInteger() divBy "44002379163849686934".toBigInteger()
-//    val two = "597728771407450572129".toBigInteger() divBy "542645811175759848891".toBigInteger()
-//
-//    println(("828099487587993325537".toBigInteger() * "542645811175759848891".toBigInteger()) +
-//            ("597728771407450572129".toBigInteger() * "44002379163849686934".toBigInteger()))
-//    // Result:475666206213030388368934934158715527291953
-//
-//    println("44002379163849686934".toBigInteger() * "542645811175759848891".toBigInteger())
-//    // Result: 23877706735030566761079241379357497090194
-//
-//    println(one + two) // 17617266896778903272923516079952426936739/884359508704835805965897828865092484822
-//
-//    println("475666206213030388368934934158715527291953".toBigInteger() divBy
-//            "23877706735030566761079241379357497090194".toBigInteger())
-//    // Result:
+    val r1 = 1 divBy 2
+    val r2 = 2000000000L divBy 4000000000L
+    println(r1 == r2)
 
-    println("17617266896778903272923516079952426936739".toBigInteger() divBy  "884359508704835805965897828865092484822".toBigInteger())
+    println((2 divBy 1).toString() == "2")
+
+    println((-2 divBy 4).toString() == "-1/2")
+    println("117/1098".toRational().toString() == "13/122")
+
+    println("1/2".toRational() - "1/3".toRational() == "1/6".toRational())
+    println("1/2".toRational() + "1/3".toRational() == "5/6".toRational())
+
+    println(-(1 divBy 2) == (-1 divBy 2))
+
+    println((1 divBy 2) * (1 divBy 3) == "1/6".toRational())
+    println((1 divBy 2) / (1 divBy 4) == "2".toRational())
+
+    println((1 divBy 2) < (2 divBy 3))
+    println((1 divBy 2) in (1 divBy 3)..(2 divBy 3))
+
+    println(
+            "912016490186296920119201192141970416029".toBigInteger() divBy
+                    "1824032980372593840238402384283940832058".toBigInteger() == 1 divBy 2
+    )
 }

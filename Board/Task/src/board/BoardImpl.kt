@@ -8,14 +8,14 @@ data class NewCell<T>(override val i: Int, override val j: Int, var value: T? = 
     }
 }
 
-open class NewSquareBoard(final override val width: Int) : SquareBoard {
+open class NewSquareBoard<T>(final override val width: Int) : SquareBoard {
     // Declaration of the list of cells within the square board.
-    protected val cells: List<NewCell<Nothing>>
+    protected val cells: List<NewCell<T>>
 
     init {
         // Generating all the cells based on the square board width provided
         if (width <= 0) throw IllegalArgumentException("Width must be a positive number, was: $width")
-        cells = IntRange(1, width).flatMap { i -> IntRange(1, width).map { j -> NewCell<Nothing>(i, j) } }
+        cells = IntRange(1, width).flatMap { i -> IntRange(1, width).map { j -> NewCell<T>(i, j) } }
     }
     // Necessary Private Functions
 
@@ -41,7 +41,7 @@ open class NewSquareBoard(final override val width: Int) : SquareBoard {
     }
 
     //
-    private fun getRange(fixedCoordinate: Int, range: IntProgression, indexer: (Int, Int) -> Int): List<NewCell<Nothing>> {
+    private fun getRange(fixedCoordinate: Int, range: IntProgression, indexer: (Int, Int) -> Int): List<NewCell<T>> {
         val (start, end) = restrictToBoardBoundaries(range)
         return IntProgression.fromClosedRange(start, end, range.step).map { fluentCoordinate ->
             val index = indexer(fixedCoordinate, fluentCoordinate)
@@ -99,11 +99,16 @@ open class NewSquareBoard(final override val width: Int) : SquareBoard {
     }
 
     override fun getColumn(iRange: IntProgression, j: Int): List<Cell> {
-        return getRange(j, iRange) { row, col -> toOneIndex(row, col) }
+        return getRange(j, iRange) { col, row -> toOneIndex(row, col) }
     }
 }
 
-class NewGameBoard<T>(width: Int) : NewSquareBoard(width), GameBoard<T> {
+class NewGameBoard<T>(width: Int) : NewSquareBoard<T>(width), GameBoard<T> {
+
+    private fun cellFinder(predicate: (T?) -> Boolean): (NewCell<T>) -> Boolean {
+        return { cell -> predicate(cell.value) }
+    }
+
     override fun get(cell: Cell): T? {
         return cells[toOneIndex(cell.i, cell.j)].value
     }
@@ -113,25 +118,25 @@ class NewGameBoard<T>(width: Int) : NewSquareBoard(width), GameBoard<T> {
     }
 
     override fun filter(predicate: (T?) -> Boolean): Collection<Cell> {
-        TODO("Not yet implemented")
+        return cells.filter(cellFinder(predicate))
     }
 
     override fun find(predicate: (T?) -> Boolean): Cell? {
-        TODO("Not yet implemented")
+        return cells.find(cellFinder(predicate))
     }
 
     override fun any(predicate: (T?) -> Boolean): Boolean {
-        TODO("Not yet implemented")
+        return cells.any(cellFinder(predicate))
     }
 
     override fun all(predicate: (T?) -> Boolean): Boolean {
-        TODO("Not yet implemented")
+        return cells.all(cellFinder(predicate))
     }
 
 }
 
 fun createSquareBoard(width: Int): SquareBoard {
-    return NewSquareBoard(width)
+    return NewSquareBoard<Nothing>(width)
 }
 
 fun <T> createGameBoard(width: Int): GameBoard<T> = NewGameBoard(width)
